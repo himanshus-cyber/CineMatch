@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Watchlist | CineMatch</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        .watchlist-container {
+            padding: 50px 7%;
+        }
+
+        .watchlist-container h1 {
+            font-size: 32px;
+            margin-bottom: 30px;
+        }
+
+        .watchlist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 25px;
+        }
+
+        .watchlist-card {
+            background: #181818;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+
+        .watchlist-card:hover {
+            transform: translateY(-7px);
+        }
+
+        .watchlist-card img {
+            width: 100%;
+            height: 270px;
+            object-fit: cover;
+        }
+
+        .watchlist-card h3 {
+            padding: 15px;
+            font-size: 16px;
+        }
+
+        .empty-watchlist {
+            color: #aaa;
+            font-size: 18px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="watchlist-container">
+
+        <h1>❤️ My Watchlist</h1>
+
+        {% if movies %}
+
+        <div class="watchlist-grid">
+
+            {% for movie in movies %}
+
+            <div class="watchlist-card">
+
+                <a href="{{ url_for('movie_details', movie_id=movie[1]) }}">
+
+                    {% if movie[3] %}
+                    <img src="https://image.tmdb.org/t/p/w500{{ movie[3] }}"
+                         alt="{{ movie[2] }}">
+                    {% else %}
+                    <img src="https://placehold.co/300x450?text=No+Poster"
+                         alt="No poster available">
+                    {% endif %}
+
+                </a>
+
+                <h3>{{ movie[2] }}</h3>
+                <form action="{{ url_for('remove_from_watchlist', movie_id=movie[1]) }}"
+      method="POST">
+
+    <button type="submit" class="remove-btn">
+        🗑️ Remove from Watchlist
+    </button>
+
+</form>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+
+        <p class="empty-watchlist">
+            Your watchlist is empty! 🍿
+            <br><br>
+            Add your favourite movies to watch them later.
+        </p>
+
+        {% endif %}
+
+    </div>
+
+</body>
+
+</html>
